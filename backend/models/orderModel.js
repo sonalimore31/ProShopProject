@@ -13,7 +13,8 @@ const orderSchema = mongoose.Schema(
         qty: { type: Number, required: true },
         images: {
           type: String,
-          // required: true
+
+          //required: true
         },
         price: { type: Number, required: true },
         product: {
@@ -31,7 +32,7 @@ const orderSchema = mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      // required: true,
+      required: true,
     },
     paymentResult: {
       id: { type: String },
@@ -70,11 +71,11 @@ const orderSchema = mongoose.Schema(
     deliveredAt: {
       type: Date,
     },
-    isAdmin: {
-      type: String,
-      required: true,
-      default: false,
-    },
+    // isAdmin: {
+    //   type: String,
+    //   required: true,
+    //   default: false,
+    // },
   },
   {
     timestamps: true,
