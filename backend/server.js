@@ -23,36 +23,33 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(express.json())
 
-app.get("/", (req, res) => {
-  res.send("API is running...")
-})
-
-app.get("/api/config/paypal", (req, res) =>
-  res.send(process.env.PAYPAL_CLIENT_ID)
-)
-
 app.use("/api/products", productRoutes)
 app.use("/api/users", userRoutes)
 app.use("/api/orders", orderRoutes)
 app.use("/api/upload", uploadRoutes)
 
+app.get("/api/config/paypal", (req, res) =>
+  res.send(process.env.PAYPAL_CLIENT_ID)
+)
+
 const __dirname = path.resolve()
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")))
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/build")))
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
+  )
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running.......")
+  })
+}
 
 app.use(notFound)
 
 app.use(errorHandler)
-
-// app.get("/api/products", (req, res) => {
-//   //   res.json({ success: true, data: products })
-//   //   res.status(200).send(products)
-//   res.json(products)
-// })
-
-// app.get("/api/products/:id", (req, res) => {
-//   const product = products.find((p) => p._id === req.params.id)
-//   res.json(product)
-// })
 
 const PORT = process.env.PORT || 5000
 app.listen(
