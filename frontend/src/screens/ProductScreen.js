@@ -11,6 +11,7 @@ import {
   createProductReview,
 } from "../actions/productActions"
 import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants"
+
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1)
   const [rating, setRating] = useState(0)
@@ -21,15 +22,15 @@ const ProductScreen = ({ history, match }) => {
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   const productReviewCreate = useSelector((state) => state.productReviewCreate)
   const {
     success: successProductReview,
     loading: loadingProductReview,
     error: errorProductReview,
   } = productReviewCreate
-
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
 
   useEffect(() => {
     if (successProductReview) {
@@ -83,9 +84,9 @@ const ProductScreen = ({ history, match }) => {
                     text={`${product.numReviews} reviews`}
                   />
                 </ListGroup.Item>
-                <ListGroup.Item>Price :${product.price}</ListGroup.Item>
+                <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
                 <ListGroup.Item>
-                  Description :{product.description}
+                  Description: {product.description}
                 </ListGroup.Item>
               </ListGroup>
             </Col>
@@ -105,7 +106,7 @@ const ProductScreen = ({ history, match }) => {
                     <Row>
                       <Col>Status:</Col>
                       <Col>
-                        {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
+                        {product.countInStock > 0 ? "In Stock" : "Out Of Stock"}
                       </Col>
                     </Row>
                   </ListGroup.Item>
@@ -150,7 +151,7 @@ const ProductScreen = ({ history, match }) => {
           <Row>
             <Col md={6}>
               <h2>Reviews</h2>
-              {product.reviews.length === 0 && <Message> No Reviews</Message>}
+              {product.reviews.length === 0 && <Message>No Reviews</Message>}
               <ListGroup variant='flush'>
                 {product.reviews.map((review) => (
                   <ListGroup.Item key={review._id}>
@@ -160,10 +161,8 @@ const ProductScreen = ({ history, match }) => {
                     <p>{review.comment}</p>
                   </ListGroup.Item>
                 ))}
-
                 <ListGroup.Item>
                   <h2>Write a Customer Review</h2>
-
                   {successProductReview && (
                     <Message variant='success'>
                       Review submitted successfully
@@ -179,7 +178,7 @@ const ProductScreen = ({ history, match }) => {
                         <Form.Label>Rating</Form.Label>
                         <Form.Control
                           as='select'
-                          vlaue={rating}
+                          value={rating}
                           onChange={(e) => setRating(e.target.value)}
                         >
                           <option value=''>Select...</option>
@@ -204,13 +203,12 @@ const ProductScreen = ({ history, match }) => {
                         type='submit'
                         variant='primary'
                       >
-                        {" "}
                         Submit
                       </Button>
                     </Form>
                   ) : (
                     <Message>
-                      Please<Link to='/login'>sign in</Link>to write a review{" "}
+                      Please <Link to='/login'>sign in</Link> to write a review{" "}
                     </Message>
                   )}
                 </ListGroup.Item>
